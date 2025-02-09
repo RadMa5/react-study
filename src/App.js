@@ -1,11 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { createContext } from 'react';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import HomePage from './components/HomePage';
-import AboutPage from './components/AboutPage';
 import { useState } from 'react';
 import { useContext } from 'react';
+import AddProduct from './components/AddProduct';
+import RedactProduct from './components/RedactProduct';
+
+import { Provider } from 'react-redux';
+import store from './app/store';
 
 
 const themeContext = createContext();
@@ -26,17 +29,20 @@ function App() {
   };
 
   return (
-    <themeContext.Provider value={{ theme, changeTheme}}>
-      <div className="App content" style={{ color: theme === 'light' ? 'black' : 'white', background: theme === 'light' ? 'white' : 'black' }}>
-        <Router>
-          <ThemeToggle />
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/about' element={<AboutPage />} />
-          </Routes>
-        </Router>
-      </div>
-    </themeContext.Provider>
+    <Provider store={store}>
+      <themeContext.Provider value={{ theme, changeTheme}}>
+        <div className="App content" style={{ color: theme === 'light' ? 'black' : 'white', background: theme === 'light' ? 'white' : 'black' }}>
+          <Router>
+            <ThemeToggle />
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/addProduct' element={<AddProduct />} />
+              <Route path='/redactProduct' element={<RedactProduct />}/>
+            </Routes>
+          </Router>
+        </div>
+      </themeContext.Provider>
+    </Provider>
   );
 }
 
